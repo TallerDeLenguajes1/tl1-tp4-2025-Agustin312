@@ -16,15 +16,19 @@ typedef struct Nodo
 }Nodo;
 
 Nodo * CrearListaVacia();
-Nodo * CraearNodo(Tarea *tarea);
+Nodo * CrearNodo(Tarea *tarea);
 void InsertarNodo(Nodo **Start, Nodo* nodo);
 Nodo * QuitarNodo(Nodo **Start, int dato);
 void MostrarLista(Nodo *start);
+void BuscarListaID(Nodo **Start, int dato);
+void BuscarListaP(Nodo **Start, char* palabra);
+
 int main(){
     char buff[100];
+    char *palabraClave;
     int num = 1;
     int ID = 1000;
-    int IDCambio;
+    int IDCambio, IDbusca;
     Nodo * StartPendiente, *StartRealizada;
 
     StartPendiente = CrearListaVacia();
@@ -44,7 +48,7 @@ int main(){
         tarea->TareaID = ID;
         printf("Ingrese la duracion de la tarea entre 10 a 100: \n");
         scanf("%d",&tarea->Duracion);
-        InsertarNodo(&StartPendiente,CraearNodo(tarea));
+        InsertarNodo(&StartPendiente,CrearNodo(tarea));
 
         printf("Si quiere seguir cargando tareas ingrese el valor 1 sino ingrese 0 \n");                
         scanf("%d",&num);
@@ -72,6 +76,27 @@ int main(){
     printf("    --- Lista de Tareas Realizadas ---\n");
     MostrarLista(StartRealizada);
 
+    printf("Ingrese el ID de la tarea que quiere buscar: \n");
+    scanf("%d",&IDbusca);
+    printf("Lista de Realizadas\n");
+    BuscarListaID(&StartPendiente,IDbusca);
+    printf("Lista de Pendientes\n");
+    BuscarListaID(&StartRealizada,IDbusca);
+
+    printf("Ingrese la palabra clave con la que quiere buscar la tarea: \n");
+    fflush(stdin);
+    gets(buff);
+    palabraClave = (char*)malloc(sizeof(char)*(strlen(buff)+1));
+    strcpy(palabraClave, buff);
+
+    printf("La palabra clave de busqueda es: \n");
+    puts(palabraClave);
+
+    printf("Lista de Realizadas\n");
+    BuscarListaP(&StartPendiente,palabraClave);
+    printf("Lista de Pendientes\n");
+    BuscarListaP(&StartRealizada,palabraClave);
+
     return 0;
 }
 
@@ -79,7 +104,7 @@ Nodo * CrearListaVacia(){
     return NULL;
 }
 
-Nodo * CraearNodo(Tarea *tarea){
+Nodo * CrearNodo(Tarea *tarea){
 
     Nodo * NuevoNodo = (Nodo*)malloc(sizeof(Nodo));
     NuevoNodo->T = *tarea;
@@ -107,7 +132,7 @@ Nodo * QuitarNodo(Nodo **Start, int dato){
     {
         if (nodoAux == (*Start))
         {
-            (*Start) = nodoAux->Siguiente;s
+            (*Start) = nodoAux->Siguiente;
         }
         else
         {
@@ -116,6 +141,50 @@ Nodo * QuitarNodo(Nodo **Start, int dato){
             nodoAux->Siguiente = NULL;
     }
     return (nodoAux);
+}
+
+void BuscarListaID(Nodo **Start, int dato){
+
+    Nodo *aux = *Start;
+
+    while (aux != NULL && aux->T.TareaID != dato)
+    {
+        aux = aux->Siguiente;
+    }
+    
+    if (aux != NULL)
+    {   
+        printf("    --Se encuentra en esta lista--\n");
+        printf("La tarea encontrada es la siguiente: \n");
+        printf("ID de la tarea: %d\n",aux->T.TareaID);
+        printf("Descripcion de tarea : \n");
+        puts(aux->T.Descripcion);
+        printf("Duracion de la tarea: %d\n",aux->T.Duracion);
+    }else{
+        printf("Tarea no encontrada en esta lista\n");
+    }
+}
+
+void BuscarListaP(Nodo **Start, char* palabra){
+
+    Nodo *aux = *Start;
+
+    while (aux != NULL && strstr(aux->T.Descripcion,palabra) == NULL)
+    {
+        aux = aux->Siguiente;
+    }
+    
+    if (aux != NULL)
+    {   
+        printf("    --Se encuentra en esta lista--\n");
+        printf("La tarea encontrada es la siguiente: \n");
+        printf("ID de la tarea: %d\n",aux->T.TareaID);
+        printf("Descripcion de tarea : \n");
+        puts(aux->T.Descripcion);
+        printf("Duracion de la tarea: %d\n",aux->T.Duracion);
+    }else{
+        printf("Tarea no encontrada en esta lista\n");
+    }
 }
 
 void MostrarLista(Nodo *start){
@@ -127,7 +196,7 @@ void MostrarLista(Nodo *start){
         printf("ID de la tarea: %d\n",aux->T.TareaID);
         printf("Descripcion de tarea : \n");
         puts(aux->T.Descripcion);
-        printf("Duracion de la tarea: %d",aux->T.Duracion);
+        printf("Duracion de la tarea: %d\n",aux->T.Duracion);
 
         aux = aux->Siguiente;
     }
