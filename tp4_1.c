@@ -78,9 +78,9 @@ int main(){
 
     printf("Ingrese el ID de la tarea que quiere buscar: \n");
     scanf("%d",&IDbusca);
-    printf("Lista de Realizadas\n");
-    BuscarListaID(&StartPendiente,IDbusca);
     printf("Lista de Pendientes\n");
+    BuscarListaID(&StartPendiente,IDbusca);
+    printf("Lista de Realizadas\n");
     BuscarListaID(&StartRealizada,IDbusca);
 
     printf("Ingrese la palabra clave con la que quiere buscar la tarea: \n");
@@ -92,9 +92,9 @@ int main(){
     printf("La palabra clave de busqueda es: \n");
     puts(palabraClave);
 
-    printf("Lista de Realizadas\n");
-    BuscarListaP(&StartPendiente,palabraClave);
     printf("Lista de Pendientes\n");
+    BuscarListaP(&StartPendiente,palabraClave);
+    printf("Lista de Realizadas\n");
     BuscarListaP(&StartRealizada,palabraClave);
 
     return 0;
